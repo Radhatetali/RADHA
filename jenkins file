@@ -1,0 +1,57 @@
+pipeline {
+    agent any
+    
+    environment {
+        // Define environment variables
+        MY_ENV_VAR = 'some-value'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout code from GitHub repository
+                git url: 'https://github.com/username/repository.git', branch: 'main'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                // Build steps
+                echo 'Building...'
+                sh 'make build' // Replace with your actual build command
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                // Test steps
+                echo 'Testing...'
+                sh 'make test' // Replace with your actual test command
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                // Deploy steps
+                echo 'Deploying...'
+                sh 'make deploy' // Replace with your actual deploy command
+            }
+        }
+    }
+    
+    post {
+        always {
+            // Actions to perform after the pipeline completes
+            echo 'Cleaning up...'
+            cleanWs() // Clean up the workspace
+        }
+        success {
+            // Actions if the pipeline succeeds
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            // Actions if the pipeline fails
+            echo 'Pipeline failed!'
+        }
+    }
+}
